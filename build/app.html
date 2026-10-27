@@ -1,0 +1,527 @@
+<title>Wolff Cebuano Dictionary</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one column, phone first. Sticky search bar; results list; the entry opens as a full-screen sheet with its own scroll. */
+:root {
+  --bg: #f3f5f4;
+  --surface: #ffffff;
+  --ink: #1a2326;
+  --ink-2: #33464c;
+  --muted: #627175;
+  --line: #d6dedd;
+  --accent: #0c6a6e;
+  --accent-soft: #dcecec;
+  --mark: #fde9a6;
+  --chip: #e7eded;
+  --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, "Noto Serif", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1617; --surface: #172123; --ink: #e2eaea; --ink-2: #bfcdcf; --muted: #8fa0a3;
+  --line: #29383a; --accent: #5cc3c2; --accent-soft: #1d3638; --mark: #5a4a12; --chip: #203032;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1617; --surface: #172123; --ink: #e2eaea; --ink-2: #bfcdcf; --muted: #8fa0a3;
+  --line: #29383a; --accent: #5cc3c2; --accent-soft: #1d3638; --mark: #5a4a12; --chip: #203032;
+  color-scheme: dark }
+
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 16px;
+  -webkit-text-size-adjust: 100%; overscroll-behavior-y: none; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+.gut { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface);
+  border-bottom: 1px solid var(--line); padding-block: 10px 10px; display: grid; gap: 8px; }
+.brand { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.brand b { font-family: var(--serif); font-size: 1.05rem; font-weight: 600; letter-spacing: .01em; }
+.brand span { color: var(--muted); font-size: .75rem; }
+.searchrow { display: flex; gap: 8px; align-items: center; }
+.field { position: relative; flex: 1; min-width: 0; }
+#q { width: 100%; box-sizing: border-box; font: inherit; font-size: 1.1rem; padding: 10px 38px 10px 12px;
+  border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); outline: none;
+  -webkit-appearance: none; appearance: none; }
+#q:focus { border-color: var(--accent); }
+#q::-webkit-search-cancel-button { display: none; }
+#clear { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); border: 0; background: none;
+  color: var(--muted); font-size: 1.3rem; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; }
+.seg { display: inline-flex; border: 1.5px solid var(--line); border-radius: 10px; overflow: hidden; flex: none; }
+.seg button { font: inherit; font-size: .8rem; font-weight: 600; letter-spacing: .03em; border: 0; background: var(--bg);
+  color: var(--muted); padding: 11px 10px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--surface); }
+button:focus-visible, a:focus-visible, li.r:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main { padding-block: 6px 40px; }
+#status { color: var(--muted); font-size: .85rem; padding-block: 10px 4px; }
+#status button { font: inherit; color: var(--accent); background: none; border: 0; padding: 0; text-decoration: underline; cursor: pointer; }
+ul#results { list-style: none; margin: 0; padding: 0; }
+li.r { display: grid; gap: 3px; padding: 11px 0; border-bottom: 1px solid var(--line); cursor: pointer; min-width: 0; }
+li.r:active { background: var(--accent-soft); }
+.rh { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; min-width: 0; }
+.hw { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; }
+.hw sub { font-size: .65em; color: var(--muted); font-weight: 400; }
+.pos { font-family: var(--serif); font-style: italic; color: var(--muted); }
+.why { font-size: .72rem; font-weight: 600; letter-spacing: .02em; color: var(--accent); background: var(--accent-soft);
+  padding: 2px 7px; border-radius: 999px; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.gl { color: var(--ink-2); font-size: .92rem; line-height: 1.4; overflow: hidden; display: -webkit-box;
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.gl i { color: var(--muted); }
+
+.intro { padding-block: 14px; color: var(--ink-2); line-height: 1.5; font-size: .95rem; max-width: 36em; }
+.intro h2 { font-family: var(--serif); font-size: 1.15rem; margin: 0 0 6px; color: var(--ink); }
+.intro ul { padding-left: 1.1em; margin: 6px 0 12px; display: grid; gap: 4px; }
+.intro code { font-family: var(--mono); font-size: .85em; background: var(--chip); padding: 1px 5px; border-radius: 5px; }
+.try { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.try button { font: inherit; font-size: .85rem; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 999px; padding: 5px 11px; cursor: pointer; }
+
+/* Entry sheet */
+#sheet { position: fixed; inset: 0; z-index: 20; background: var(--surface); display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px); }
+#sheet .top { display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--line); padding-block: 6px; }
+#sheet .top button { font: inherit; border: 0; background: none; color: var(--accent); font-size: .95rem; font-weight: 600;
+  padding: 8px 8px; border-radius: 8px; cursor: pointer; }
+#sheet .top button:disabled { color: var(--line); }
+#sheet .top .sp { flex: 1; }
+#sheet .scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-block: 14px calc(40px + env(safe-area-inset-bottom, 0px)); }
+.entry { font-family: var(--serif); font-size: 1.08rem; line-height: 1.6; max-width: 38em; overflow-wrap: anywhere; }
+.entry + .entry { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); }
+.entry c { font-weight: 700; }
+.entry > c:first-child { font-size: 1.45rem; display: inline; }
+.entry c sub, .entry a sub { font-size: .65em; color: var(--muted); font-weight: 400; }
+.entry n { display: inline-block; min-width: 1.35em; text-align: center; font-family: var(--sans); font-size: .72rem; font-weight: 700;
+  color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 0 4px; line-height: 1.35; vertical-align: .12em; }
+.entry o { font-style: italic; color: var(--muted); }
+.entry x { font-style: italic; color: var(--accent); }
+.entry g { font-style: italic; }
+.entry r { font-family: var(--mono); font-size: .74rem; background: var(--chip); color: var(--ink-2); padding: 1px 5px;
+  border-radius: 5px; white-space: nowrap; vertical-align: .08em; }
+.entry k { font-variant: small-caps; letter-spacing: .02em; }
+.entry a[data-e] { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.entry mark, .entry c.hl { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 2px; }
+.addenda { font-family: var(--sans); font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 4px; }
+.note { font-size: .8rem; color: var(--muted); margin-top: 22px; line-height: 1.5; max-width: 38em; }
+
+#loading { padding-block: 40px; color: var(--muted); text-align: center; }
+@media (prefers-reduced-motion: no-preference) { #sheet { animation: up .16s ease-out; } @keyframes up { from { transform: translateY(12px); opacity: .6 } } }
+</style>
+
+<header class="bar gut">
+  <div class="brand"><b>Wolff · Cebuano–English</b><span id="count"></span></div>
+  <div class="searchrow">
+    <div class="field">
+      <input id="q" type="search" placeholder="Search Cebuano…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Search">
+      <button id="clear" aria-label="Clear search" hidden>×</button>
+    </div>
+    <div class="seg" role="group" aria-label="Search language">
+      <button id="m-ceb" aria-pressed="true">CEB</button><button id="m-eng" aria-pressed="false">ENG</button>
+    </div>
+  </div>
+</header>
+
+<main class="gut">
+  <div id="loading">Loading dictionary…</div>
+  <div id="status" hidden></div>
+  <ul id="results"></ul>
+  <div id="intro" class="intro" hidden>
+    <h2>Search by Cebuano or English</h2>
+    <ul>
+      <li>Spelling is forgiving: <code>e</code> = <code>i</code>, <code>o</code> = <code>u</code>, and accents are optional.</li>
+      <li>Colloquial forms without <code>l</code> find the <code>l</code> form: <code>uwan</code> → ulan, <code>bay</code> → balay.</li>
+      <li>Affixed words find their root, including nasal assimilation: <code>pamahaw</code> → báhaw, <code>gikaon</code> → káun.</li>
+      <li>Headword matches come first. Tap underlined cross-references to follow them.</li>
+    </ul>
+    <div class="try" id="try"></div>
+  </div>
+</main>
+
+<section id="sheet" hidden aria-label="Dictionary entry">
+  <div class="top gut">
+    <button id="back">‹ Back</button>
+    <span class="sp"></span>
+    <button id="prev" aria-label="Previous entry">‹ Prev</button>
+    <button id="next" aria-label="Next entry">Next ›</button>
+  </div>
+  <div class="scroll gut" id="scroll"></div>
+</section>
+
+<script id="dbdata" type="application/octet-stream">@@DATA@@</script>
+<script>
+(() => {
+'use strict';
+let DB = null, HEADKEYS = null, ENGIDX = null;
+const $ = id => document.getElementById(id);
+const qEl = $('q'), resEl = $('results'), statusEl = $('status');
+let mode = 'ceb';
+try { mode = localStorage.getItem('wolff-mode') || 'ceb'; } catch (e) {}
+
+/* ---------- spelling ---------- */
+const MAP = { e: 'i', o: 'u', c: 'k', f: 'p', v: 'b', z: 's', j: 'd', q: 'k' };
+function norm(s) {
+  s = s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  s = s.replace(/\(.*?\)/g, '').replace(/[0-9₀-₉]/g, '');
+  s = s.replace(/ch/g, 'ts').replace(/qu/g, 'k');
+  s = s.replace(/[eocfvzjq]/g, ch => MAP[ch]).replace(/x/g, 'ks');
+  return s.replace(/[^a-z]/g, '');
+}
+const isV = ch => ch === 'a' || ch === 'i' || ch === 'u';
+
+/* l/w/y alternations from the query side: uwan → ulan, bagaw → bagal */
+function lwVariants(k) {
+  const out = new Set();
+  const sites = [];
+  for (let i = 1; i < k.length - 1; i++)
+    if ((k[i] === 'w' || k[i] === 'y') && isV(k[i - 1]) && isV(k[i + 1])) sites.push(i);
+  const n = Math.min(sites.length, 3);
+  for (let mask = 1; mask < (1 << n); mask++) {
+    const a = k.split('');
+    for (let b = 0; b < n; b++) if (mask & (1 << b)) a[sites[b]] = 'l';
+    out.add(a.join(''));
+  }
+  if (/aw$/.test(k)) out.add(k.slice(0, -1) + 'l');
+  if (/[^aiu]u$/.test(k)) out.add(k + 'l');
+  // long vowel from a dropped l: kaabaw / kábaw → kalabaw
+  for (let i = 1; i < k.length; i++)
+    if (isV(k[i]) && k[i] === k[i - 1]) out.add(k.slice(0, i) + 'l' + k.slice(i));
+  out.delete(k);
+  return [...out];
+}
+
+/* ---------- morphology: strip affixes back to a root ---------- */
+const PRE = ['pinaka','pagpaka','nagpaka','magpaka','gipaka','ipaka','nagpakig','magpakig','pakig','makig','nakig',
+  'ginapa','magpa','nagpa','pagpa','gipa','ipa','mapa','napa','magka','nagka','pagka','maka','naka','paka','gika',
+  'kina','taga','tagi','pina','pasi','pahi','paki','pala','tali','gina','gin','mag','nag','pag','tag','tig','ika',
+  'ka','ma','na','pa','mu','mi','ni','gi','hi','ha','ig','di','ti','i'];
+const NST = ['ginapa','gipa','ipa','nagpa','magpa','pagpa','mapa','napa','panghi','nanghi','manghi','pani','nani','mani',
+  'pa','ma','na','ha','hi','gi','i'];
+const SUF = ['anan','unun','anay','hanan','hunun','han','hun','hay','an','un','ay','hi','ha','a','i'];
+
+function steps(w) {
+  const out = [];
+  const L = w.length;
+  for (const p of PRE) if (w.startsWith(p) && L - p.length >= 3) out.push([w.slice(p.length), p + '-']);
+  for (const S of NST) {
+    if (!w.startsWith(S)) continue;
+    const r0 = w.slice(S.length), lab = S + 'N-';
+    if (r0.startsWith('ng')) {
+      const r = r0.slice(2);
+      if (r.length < 2) continue;
+      if (isV(r[0])) out.push(['k' + r, lab], [r, lab], ['g' + r, lab]);
+      else out.push([r, lab]);
+    } else if (r0[0] === 'm') {
+      const r = r0.slice(1);
+      if (r.length < 2) continue;
+      if (isV(r[0])) out.push(['b' + r, lab], ['p' + r, lab]);
+      else if ('bp'.includes(r[0])) out.push([r, lab]);
+    } else if (r0[0] === 'n') {
+      const r = r0.slice(1);
+      if (r.length < 2) continue;
+      if (isV(r[0])) out.push(['t' + r, lab], ['s' + r, lab], ['d' + r, lab]);
+      else if ('dts'.includes(r[0])) out.push([r, lab]);
+    }
+  }
+  let m;
+  if ((m = w.match(/^(ng|[^aiu])(in|um)(.{2,})$/))) out.push([m[1] + m[3], '-' + m[2] + '-']);
+  if ((m = w.match(/^(in|um)([aiu].{2,})$/))) out.push([m[2], '-' + m[1] + '-']);
+  if ((m = w.match(/^([^aiu])(ar|al)([aiu].{2,})$/))) out.push([m[1] + m[3], '-' + m[2] + '-']);
+  for (const s of SUF) {
+    if (!w.endsWith(s) || L - s.length < 3) continue;
+    const r = w.slice(0, L - s.length), lab = '-' + s;
+    out.push([r, lab]);
+    if (/[h]$/.test(r) && r.length > 3) out.push([r.slice(0, -1), lab]);
+    const c = r.match(/^(.*?[aiu])(ng|[^aiu])(ng|[^aiu])$/);
+    if (c) {
+      const [, a, c1, c2] = c;
+      for (const v of 'aiu') {
+        out.push([a + c1 + v + c2, lab]);          // dakp-an → dakup
+        out.push([a + c2 + v + c1, lab]);          // sudl-un → sulud
+        if (c1 === 'g' || c1 === 'd') out.push([a + 'l' + v + c2, lab], [a + 'r' + v + c2, lab]);  // hagk-an → haluk
+      }
+    }
+  }
+  if (L >= 6 && L % 2 === 0 && w.slice(0, L / 2) === w.slice(L / 2)) out.push([w.slice(L / 2), 'doubled']);
+  if ((m = w.match(/^([^aiu]?[aiu])\1(.{2,})$/))) out.push([m[1] + m[2], 'redup.']);
+  if ((m = w.match(/^(.{2,}[aiu])(ng|g|y)$/))) out.push([m[1], '-' + m[2]]);
+  return out;
+}
+
+function rootCandidates(q) {
+  const seen = new Map([[q, []]]);
+  let frontier = [q];
+  for (let depth = 0; depth < 3; depth++) {
+    const next = [];
+    for (const w of frontier) {
+      for (const [c, lab] of steps(w)) {
+        if (c.length < 2 || seen.has(c)) continue;
+        seen.set(c, seen.get(w).concat(lab));
+        next.push(c);
+        if (seen.size > 1500) break;
+      }
+    }
+    frontier = next;
+  }
+  seen.delete(q);
+  return seen;
+}
+
+/* ---------- entry helpers ---------- */
+const plain = h => h.replace(/<sub>.*?<\/sub>/g, '').replace(/<[^>]+>/g, '');
+function headHTML(i) { const m = DB.e[i][0].match(/^<c>(.*?)<\/c>/); return m ? m[1] : '?'; }
+function headPlain(i) { return plain(headHTML(i)).split(',')[0].trim(); }
+function posOf(i) { const m = DB.e[i][0].match(/^<c>.*?<\/c>\s*(?:<o>(.*?)<\/o>)?/); return m && m[1] ? m[1] : ''; }
+function glossOf(i) {
+  const g = DB.g[i];
+  for (const s of g) if (typeof s === 'string') return esc(s);
+  const m = DB.e[i][0].match(/^<c>.*?<\/c>\s*=\s*(.*)$/);
+  if (m) return '<i>see</i> ' + esc(plain(m[1]).replace(/\.$/, ''));
+  return esc(plain(DB.e[i][0]).slice(0, 120));
+}
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ---------- Cebuano search ---------- */
+function searchCeb(raw) {
+  const q = norm(raw);
+  const R = new Map();
+  if (!q) return { q, list: [] };
+  const add = (i, score, why, mark) => {
+    const cur = R.get(i);
+    if (!cur || cur.score < score) R.set(i, { i, score, why, mark: mark || [q] });
+  };
+  const H = DB.h, S = DB.s, D = DB.d, V = DB.v, X = DB.x;
+  // 1. headword
+  (H[q] || []).forEach((i, n) => add(i, 1000 - n, ''));
+  // 2. written-out sub-entry
+  (S[q] || []).forEach(([i, f], n) => add(i, 900 - n, 'contains ' + f, [q]));
+  // 3. affix sub-entry applied to the root
+  (D[q] || []).forEach(([i, a], n) => add(i, 880 - n, a + ' + ' + headPlain(i), ['@' + a, q]));
+  // 4. dialect / l–w variants
+  (V[q] || []).forEach(i => add(i, 820, 'variant of ' + headPlain(i), keysOf(i)));
+  for (const v of lwVariants(q)) {
+    (H[v] || []).forEach(i => add(i, 810, 'as ' + headPlain(i), [v]));
+    (S[v] || []).forEach(([i, f]) => add(i, 790, 'contains ' + f, [v]));
+    (D[v] || []).forEach(([i, a]) => add(i, 780, a + ' + ' + headPlain(i), ['@' + a, v]));
+  }
+  // 5. root after stripping affixes
+  if (q.length >= 4) {
+    const cands = rootCandidates(q);
+    for (const [c, path] of cands) {
+      const base = 720 - 25 * path.length;
+      const how = path.join(' ') + ' + ';
+      const hit = (i, sc, root) => {
+        const h = DB.e[i][0], hp = headPlain(i);
+        if (/^[-*]?-|-$/.test(hp)) return;                 // affix entries are not roots
+        let bonus = Math.min(12, h.length / 300);         // well-documented words first
+        for (const lab of path) if (lab.endsWith('-') && h.includes('<c>' + lab.replace(/^[mng](?=[a-zN])/, 'p'))) bonus += 15;
+        add(i, Math.round(sc + bonus), how + root, [q]);
+      };
+      (H[c] || []).forEach(i => hit(i, base, headPlain(i)));
+      (V[c] || []).forEach(i => hit(i, base - 15, headPlain(i)));
+      (S[c] || []).forEach(([i, f]) => hit(i, base - 20, f));
+      if (path.length <= 2) for (const v of lwVariants(c)) (H[v] || []).forEach(i => hit(i, base - 30, headPlain(i)));
+    }
+  }
+  // 6. form found in Cebuano example sentences
+  (X[q] || []).forEach((i, n) => add(i, 400 - n, 'in an example', [q]));
+  // 7. headwords beginning with the query
+  if (q.length >= 2) {
+    let lo = 0, hi = HEADKEYS.length;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (HEADKEYS[mid] < q) lo = mid + 1; else hi = mid; }
+    let n = 0;
+    for (let j = lo; j < HEADKEYS.length && HEADKEYS[j].startsWith(q) && n < 40; j++, n++)
+      if (HEADKEYS[j] !== q) H[HEADKEYS[j]].forEach(i => add(i, 300 - n, ''));
+  }
+  const list = [...R.values()].sort((a, b) => b.score - a.score || a.i - b.i).slice(0, 80);
+  return { q, list };
+}
+function keysOf(i) { return headPlain(i).split(/,\s*/).map(norm); }
+
+/* ---------- English search ---------- */
+const STOP = new Set(['a','an','the','to','of','be','s','t','o','st','so','k','ko','or','and','in','for','with','on','at','sth']);
+const stem = w => w.replace(/'s$/, '').replace(/(ies)$/, 'y').replace(/([^s])s$/, '$1');
+const words = s => (s.toLowerCase().match(/[a-z][a-z']*/g) || []).map(stem).filter(w => !STOP.has(w));
+function buildEng() {
+  ENGIDX = new Map();
+  DB.g.forEach((segs, i) => {
+    const seen = new Set();
+    for (const s of segs) if (typeof s === 'string') for (const w of words(s)) {
+      if (seen.has(w)) continue; seen.add(w);
+      let a = ENGIDX.get(w); if (!a) ENGIDX.set(w, a = []); a.push(i);
+    }
+  });
+}
+function searchEng(raw) {
+  if (!ENGIDX) buildEng();
+  const qw = words(raw);
+  if (!qw.length) return { list: [] };
+  const lists = qw.map(w => ENGIDX.get(w) || []);
+  lists.sort((a, b) => a.length - b.length);
+  let cand = lists[0];
+  for (const l of lists.slice(1)) { const s = new Set(l); cand = cand.filter(i => s.has(i)); }
+  const qs = qw.join(' ');
+  const list = [];
+  for (const i of cand) {
+    let best = 0, bestSeg = '', bestLab = '', label = '', first = true, hits = 0;
+    for (const s of DB.g[i]) {
+      if (typeof s !== 'string') { label = s[0]; continue; }
+      const sw = words(s), ss = sw.join(' ');
+      let sc = 0;
+      if (ss === qs) sc = 100;
+      else if (ss.startsWith(qs + ' ')) sc = 72 - Math.min(20, sw.length * 2);
+      else if (qw.every(w => sw.includes(w))) sc = 48 - Math.min(30, sw.length * 2);
+      if (sc) {
+        hits++;
+        if (!label) sc += 12;
+        if (first) sc += 8;
+        if (sc > best) { best = sc; bestSeg = s; bestLab = label; }
+      }
+      first = false;
+    }
+    if (best) list.push({ i, score: best + Math.min(3, hits - 1) * 2, why: bestLab ? bestLab.replace('—', headPlain(i)) : '', gloss: bestSeg, mark: [] });
+  }
+  list.sort((a, b) => b.score - a.score || a.i - b.i);
+  return { list: list.slice(0, 80), qw };
+}
+
+/* ---------- rendering ---------- */
+let lastResults = [];
+function renderResults(res, raw) {
+  lastResults = res.list;
+  resEl.innerHTML = '';
+  $('intro').hidden = !!raw;
+  statusEl.hidden = !raw;
+  if (!raw) return;
+  if (!res.list.length) {
+    const other = mode === 'ceb' ? 'English' : 'Cebuano';
+    statusEl.innerHTML = 'No entries found for “' + esc(raw) + '”. <button id="swap">Search ' + other + ' instead</button>';
+    $('swap').onclick = () => setMode(mode === 'ceb' ? 'eng' : 'ceb');
+    return;
+  }
+  statusEl.textContent = res.list.length >= 80 ? 'First 80 matches' : res.list.length + (res.list.length === 1 ? ' match' : ' matches');
+  const frag = document.createDocumentFragment();
+  res.list.forEach((r, n) => {
+    const li = document.createElement('li');
+    li.className = 'r'; li.tabIndex = 0;
+    const pos = posOf(r.i);
+    li.innerHTML = '<div class="rh"><span class="hw">' + headHTML(r.i).replace(/<\/?c>/g, '') + '</span>' +
+      (pos ? '<span class="pos">' + pos + '</span>' : '') +
+      (r.why ? '<span class="why">' + esc(r.why) + '</span>' : '') + '</div>' +
+      '<div class="gl">' + (r.gloss ? esc(r.gloss) : glossOf(r.i)) + '</div>';
+    li.onclick = () => openEntry(r.i, r.mark, true);
+    li.onkeydown = e => { if (e.key === 'Enter') openEntry(r.i, r.mark, true); };
+    frag.appendChild(li);
+  });
+  resEl.appendChild(frag);
+}
+
+let timer = 0;
+function run() {
+  const raw = qEl.value.trim();
+  $('clear').hidden = !qEl.value;
+  if (!DB) return;
+  if (!raw) { renderResults({ list: [] }, ''); return; }
+  renderResults(mode === 'ceb' ? searchCeb(raw) : searchEng(raw), raw);
+}
+qEl.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(run, 110); });
+qEl.addEventListener('keydown', e => { if (e.key === 'Enter') { qEl.blur(); run(); } });
+$('clear').onclick = () => { qEl.value = ''; run(); qEl.focus(); };
+
+function setMode(m) {
+  mode = m;
+  try { localStorage.setItem('wolff-mode', m); } catch (e) {}
+  $('m-ceb').setAttribute('aria-pressed', m === 'ceb');
+  $('m-eng').setAttribute('aria-pressed', m === 'eng');
+  qEl.placeholder = m === 'ceb' ? 'Search Cebuano…' : 'Search English…';
+  run();
+}
+$('m-ceb').onclick = () => setMode('ceb');
+$('m-eng').onclick = () => setMode('eng');
+
+/* ---------- entry sheet ---------- */
+let current = -1;
+function markIn(el, keys) {
+  const labels = new Set(keys.filter(k => k && k[0] === '@').map(k => k.slice(1).replace(/\(.*?\)/g, '').trim()));
+  const want = new Set(keys.filter(k => k && k[0] !== '@'));
+  if (!want.size && !labels.size) return null;
+  let first = null;
+  el.querySelectorAll('c').forEach((c, n) => {
+    if (n === 0) return;
+    const txt = plain(c.innerHTML);
+    const parts = txt.split(/,\s*/);
+    if (parts.some(p => want.has(norm(p)) || labels.has(p.replace(/\(.*?\)/g, '').trim()))) { c.classList.add('hl'); first = first || c; }
+  });
+  if (labels.size) return first;   // an affix sub-entry: point at it rather than every example
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) { const p = walker.currentNode.parentNode; if (p.nodeName === 'X') nodes.push(walker.currentNode); }
+  for (const t of nodes) {
+    const parts = t.nodeValue.split(/([A-Za-zÀ-ÿĀ-ž̀-ͯ-]+)/);
+    if (!parts.some((p, j) => j % 2 && want.has(norm(p)))) continue;
+    const f = document.createDocumentFragment();
+    parts.forEach((p, j) => {
+      if (j % 2 && want.has(norm(p))) { const m = document.createElement('mark'); m.textContent = p; f.appendChild(m); first = first || m; }
+      else if (p) f.appendChild(document.createTextNode(p));
+    });
+    t.parentNode.replaceChild(f, t);
+  }
+  return first;
+}
+function showEntry(i, mark) {
+  current = i;
+  const box = $('scroll');
+  const e = DB.e[i];
+  box.innerHTML = (e[1] ? '<div class="addenda">Addenda</div>' : '') + '<div class="entry">' + e[0] + '</div>' +
+    '<p class="note">Entry ' + (i + 1).toLocaleString() + ' of ' + DB.e.length.toLocaleString() +
+    '. John U. Wolff, <i>A Dictionary of Cebuano Visayan</i> (1972).</p>';
+  const target = markIn(box.querySelector('.entry'), mark || []);
+  box.scrollTop = 0;
+  if (target && target.getBoundingClientRect().top > box.clientHeight * 0.6)
+    box.scrollTop = target.getBoundingClientRect().top - box.getBoundingClientRect().top - 80;
+  $('prev').disabled = i <= 0;
+  $('next').disabled = i >= DB.e.length - 1;
+}
+function openEntry(i, mark, push) {
+  const wasOpen = !$('sheet').hidden;
+  $('sheet').hidden = false;
+  showEntry(i, mark);
+  if (push) try { history.pushState({ e: i, mark }, ''); } catch (err) {}
+  if (!wasOpen) qEl.blur();
+}
+function closeSheet() { $('sheet').hidden = true; current = -1; }
+$('back').onclick = () => { if (history.state && history.state.e !== undefined) history.back(); else closeSheet(); };
+$('prev').onclick = () => { if (current > 0) { showEntry(current - 1); replace(); } };
+$('next').onclick = () => { if (current < DB.e.length - 1) { showEntry(current + 1); replace(); } };
+function replace() { try { history.replaceState({ e: current }, ''); } catch (err) {} }
+window.addEventListener('popstate', ev => {
+  const s = ev.state;
+  if (s && s.e !== undefined) { $('sheet').hidden = false; showEntry(s.e, s.mark); }
+  else closeSheet();
+});
+$('scroll').addEventListener('click', ev => {
+  const a = ev.target.closest('a[data-e]');
+  if (a) { ev.preventDefault(); openEntry(+a.dataset.e, [], true); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('sheet').hidden) $('back').click(); });
+
+/* ---------- load ---------- */
+async function load() {
+  const b64 = $('dbdata').textContent.trim();
+  const bin = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const stream = new Blob([bin]).stream().pipeThrough(new DecompressionStream('gzip'));
+  DB = await new Response(stream).json();
+  $('dbdata').textContent = '';
+  HEADKEYS = Object.keys(DB.h).sort();
+  $('loading').hidden = true;
+  $('count').textContent = DB.e.length.toLocaleString() + ' entries';
+  const tries = [['pamahaw', 'ceb'], ['uwan', 'ceb'], ['gikaon', 'ceb'], ['kinahangan', 'ceb'], ['house', 'eng'], ['forget', 'eng']];
+  $('try').innerHTML = tries.map(([w, m]) => '<button data-w="' + w + '" data-m="' + m + '">' + w + '</button>').join('');
+  $('try').onclick = ev => { const b = ev.target.closest('button'); if (!b) return; qEl.value = b.dataset.w; setMode(b.dataset.m); };
+  setMode(mode);
+  if (!qEl.value) $('intro').hidden = false;
+  try { history.replaceState(null, ''); } catch (err) {}
+}
+load().catch(err => { $('loading').textContent = 'The dictionary could not be loaded: ' + err.message + '. Update your browser and reopen the app.'; });
+window.WOLFF = { searchCeb: q => searchCeb(q), searchEng: q => searchEng(q), get db() { return DB; } };
+})();
+</script>
